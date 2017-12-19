@@ -24,6 +24,7 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 
 
 @implementation STSecurityKeychainReadingOptions
+@synthesize localAuthContext = _localAuthContext;
 @synthesize prompt = _prompt;
 @end
 
@@ -31,6 +32,7 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 @synthesize overwriteExisting = _overwriteExisting;
 @synthesize accessibility = _accessibility;
 @synthesize accessControl = _accessControl;
+@synthesize localAuthContext = _localAuthContext;
 @synthesize prompt = _prompt;
 @end
 
@@ -39,11 +41,40 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 
 #pragma mark - Password - Presence
 
-+ (BOOL)containsPasswordForUsername:(NSString *)username service:(NSString *)service {
-	return [self containsPasswordForUsername:username service:service error:NULL];
++ (BOOL)isKeychainPasswordProtectedForUsername:(NSString *)username service:(NSString *)service {
+
+	LAContext *localAuthenticationContext = [[LAContext alloc] init];
+	if([localAuthenticationContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil]) {
+		return NO;
+	}
+
+	NSData *impossibleCredential = [@"" dataUsingEncoding:NSUTF8StringEncoding];
+	[localAuthenticationContext setCredential:impossibleCredential type:LACredentialTypeApplicationPassword];
+
+	CFTypeRef accessControlRef = SecAccessControlCreateWithFlags(NULL, kSecAttrAccessibleWhenUnlocked, kSecAccessControlApplicationPassword, NULL);
+
+	NSDictionary *query = @{
+		(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+		(__bridge id)kSecAttrService: service,
+		(__bridge id)kSecAttrAccount: username,
+		(__bridge id)kSecAttrAccessControl: (__bridge id)accessControlRef,
+		(__bridge id)kSecUseAuthenticationContext: localAuthenticationContext
+	};
+
+	CFRelease(accessControlRef);
+	accessControlRef = NULL;
+
+	OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)query, NULL);
+	return err == errSecAuthFailed;
 }
 
-+ (BOOL)containsPasswordForUsername:(NSString *)username service:(NSString *)service error:(NSError *__autoreleasing *)error {
+
++ (BOOL)containsPasswordForUsername:(NSString *)username service:(NSString *)service withReadingOptions:(id<STSecurityKeychainReadingOptions>)readingOptions {
+	return [self containsPasswordForUsername:username service:service withReadingOptions:readingOptions error:NULL];
+}
+
++ (BOOL)containsPasswordForUsername:(NSString *)username service:(NSString *)service withReadingOptions:(id<STSecurityKeychainReadingOptions>)readingOptions error:(NSError *__autoreleasing *)error {
+
 	if (error) {
 		*error = nil;
 	}
@@ -54,17 +85,29 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 		}
 		return NO;
 	}
-
 	NSDictionary *attributes = nil;
-
 	{
-		NSDictionary *query = @{
+		NSMutableDictionary *query = @{
 			(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
 			(__bridge id)kSecAttrService: service,
 			(__bridge id)kSecAttrAccount: username,
 			(__bridge id)kSecReturnAttributes: (__bridge id)kCFBooleanTrue,
-			(__bridge id)kSecUseNoAuthenticationUI: (__bridge id)kCFBooleanTrue,
-		};
+			(__bridge id)kSecUseAuthenticationUI: (__bridge id)kSecUseAuthenticationUIFail,
+		}.mutableCopy;
+		
+		// In the case where we are password protected but no local auth was passed in.  Return early with error.
+		if([self isKeychainPasswordProtectedForUsername:username service:service] && !readingOptions.localAuthContext) {
+			if (error) {
+				*error = [NSError errorWithDomain:STSecurityKeychainAccessErrorDomain code:errSecAuthFailed userInfo:nil];
+			}
+			return NO;
+		} else if(readingOptions.localAuthContext) {
+			query[(__bridge id)kSecUseAuthenticationContext] = readingOptions.localAuthContext;
+			CFTypeRef accessControlRef = SecAccessControlCreateWithFlags(NULL, kSecAttrAccessibleWhenUnlocked, kSecAccessControlApplicationPassword, NULL);
+			query[(__bridge id)kSecAttrAccessControl] = (__bridge id)accessControlRef;
+
+			CFRelease(accessControlRef);
+		}
 
 		CFDictionaryRef result = NULL;
 		OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
@@ -87,11 +130,11 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 #pragma mark - Password - Insertion
 
 + (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service {
-	return [self setPassword:password forUsername:username service:service withOptions:nil error:NULL];
+	return [self setPassword:password forUsername:username service:service withReadingOptions:nil withWritingOptions:nil  error:NULL];
 }
 
 + (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service error:(NSError * __autoreleasing *)error {
-	return [self setPassword:password forUsername:username service:service withOptions:nil error:error];
+	return [self setPassword:password forUsername:username service:service withReadingOptions:nil withWritingOptions:nil error:error];
 }
 
 + (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service overwriteExisting:(BOOL)overwriteExisting {
@@ -101,10 +144,10 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 + (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service overwriteExisting:(BOOL)overwriteExisting error:(NSError * __autoreleasing *)error {
 	STSecurityKeychainWritingOptions * const options = [[STSecurityKeychainWritingOptions alloc] init];
 	options.overwriteExisting = overwriteExisting;
-	return [self setPassword:password forUsername:username service:service withOptions:options error:error];
+	return [self setPassword:password forUsername:username service:service withReadingOptions:nil withWritingOptions:options error:error];
 }
 
-+ (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service withOptions:(id<STSecurityKeychainWritingOptions>)options error:(NSError *__autoreleasing *)error {
++ (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service withReadingOptions:(id<STSecurityKeychainReadingOptions>)readingOptions withWritingOptions:(id<STSecurityKeychainWritingOptions>)writingOptions error:(NSError *__autoreleasing *)error {
 	if (error) {
 		*error = nil;
 	}
@@ -128,13 +171,27 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 	NSData *persistentRef = nil;
 
 	{
-		NSDictionary * const query = @{
+		NSMutableDictionary * const query = @{
 			(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
 			(__bridge id)kSecAttrService: service,
 			(__bridge id)kSecAttrAccount: username,
 			(__bridge id)kSecReturnPersistentRef: (__bridge id)kCFBooleanTrue,
-			(__bridge id)kSecUseNoAuthenticationUI: (__bridge id)kCFBooleanTrue,
-		};
+			(__bridge id)kSecUseAuthenticationUI: (__bridge id)kSecUseAuthenticationUIAllow,
+		}.mutableCopy;
+
+		// In the case where we are password protected but no local auth was passed in.  Return early with error.
+		if([self isKeychainPasswordProtectedForUsername:username service:service] && !readingOptions.localAuthContext) {
+			if (error) {
+				*error = [NSError errorWithDomain:STSecurityKeychainAccessErrorDomain code:errSecAuthFailed userInfo:nil];
+			}
+			return NO;
+		} else if(readingOptions.localAuthContext) {
+			query[(__bridge id)kSecUseAuthenticationContext] = readingOptions.localAuthContext;
+			CFTypeRef accessControlRef = SecAccessControlCreateWithFlags(NULL, kSecAttrAccessibleWhenUnlocked, kSecAccessControlApplicationPassword, NULL);
+			query[(__bridge id)kSecAttrAccessControl] = (__bridge id)accessControlRef;
+
+			CFRelease(accessControlRef);
+		}
 
 		CFDataRef result = NULL;
 		OSStatus const err = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
@@ -146,7 +203,7 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 			persistentRef = (__bridge_transfer NSData *)result;
 		}
 	}
-	if (shouldUpdate && !options.overwriteExisting) {
+	if (shouldUpdate && !writingOptions.overwriteExisting) {
 		if (error) {
 			// lying about error.code but pretty close
 			*error = [NSError errorWithDomain:STSecurityKeychainAccessErrorDomain code:errSecDuplicateItem userInfo:nil];
@@ -154,14 +211,16 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 		return NO;
 	}
 
-	CFTypeRef const accessibilityRef = STSecurityKeychainItemAccessibilityToCFType(options.accessibility);
+	CFTypeRef const accessibilityRef = STSecurityKeychainItemAccessibilityToCFType(writingOptions.accessibility);
 	if (!accessibilityRef) {
 		if (error) {
 			*error = [NSError errorWithDomain:STSecurityKeychainAccessErrorDomain code:errSecParam userInfo:nil];
 		}
 		return NO;
 	}
-	CFTypeRef accessControlRef = SecAccessControlCreateWithFlags(NULL, accessibilityRef, (SecAccessControlCreateFlags)options.accessControl, NULL);
+
+	CFTypeRef accessControlRef = SecAccessControlCreateWithFlags(NULL, accessibilityRef, (SecAccessControlCreateFlags)writingOptions.accessControl, NULL);
+
 	if (!accessControlRef) {
 		if (error) {
 			*error = [NSError errorWithDomain:STSecurityKeychainAccessErrorDomain code:errSecParam userInfo:nil];
@@ -181,18 +240,35 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 		accessControlRef = NULL;
 	}
 
+	if (writingOptions.localAuthContext != nil) {
+		attributes[(__bridge id)kSecUseAuthenticationContext] = writingOptions.localAuthContext;
+	}
+
 	if (shouldUpdate) {
 		NSMutableDictionary * const query = @{}.mutableCopy;
 		if (persistentRef) {
 			query[(__bridge id)kSecValuePersistentRef] = persistentRef;
+
+			// Needs access if we are updating and encrypted
+			if(readingOptions.localAuthContext) {
+				query[(__bridge id)kSecUseAuthenticationContext] = readingOptions.localAuthContext;
+				CFTypeRef accessControlRef = SecAccessControlCreateWithFlags(NULL, kSecAttrAccessibleWhenUnlocked, kSecAccessControlApplicationPassword, NULL);
+				query[(__bridge id)kSecAttrAccessControl] = (__bridge id)accessControlRef;
+
+				CFRelease(accessControlRef);
+			}
+
+
 		} else {
 			query[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
 			query[(__bridge id)kSecAttrService] = service;
 			query[(__bridge id)kSecAttrAccount] = username;
 		}
-		if (options.prompt.length) {
-			query[(__bridge id)kSecUseOperationPrompt] = options.prompt;
+		if (writingOptions.prompt.length) {
+			query[(__bridge id)kSecUseOperationPrompt] = writingOptions.prompt;
 		}
+
+
 
 		{
 			OSStatus const err = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)attributes);
@@ -214,8 +290,8 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 		}
 	}
 
-	if (options.prompt.length) {
-		attributes[(__bridge id)kSecUseOperationPrompt] = options.prompt;
+	if (writingOptions.prompt.length) {
+		attributes[(__bridge id)kSecUseOperationPrompt] = writingOptions.prompt;
 	}
 	attributes[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
 	attributes[(__bridge id)kSecAttrService] = service;
@@ -235,14 +311,14 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 #pragma mark - Password - Retrieval
 
 + (NSString *)passwordForUsername:(NSString *)username service:(NSString *)service {
-	return [self passwordForUsername:username service:service withOptions:nil error:NULL];
+	return [self passwordForUsername:username service:service withReadingOptions:nil error:NULL];
 }
 
 + (NSString *)passwordForUsername:(NSString *)username service:(NSString *)service error:(NSError * __autoreleasing *)error {
-	return [self passwordForUsername:username service:service withOptions:nil error:error];
+	return [self passwordForUsername:username service:service withReadingOptions:nil error:error];
 }
 
-+ (NSString *)passwordForUsername:(NSString *)username service:(NSString *)service withOptions:(id<STSecurityKeychainReadingOptions>)options error:(NSError *__autoreleasing *)error {
++ (NSString *)passwordForUsername:(NSString *)username service:(NSString *)service withReadingOptions:(id<STSecurityKeychainReadingOptions>)readingOptions error:(NSError *__autoreleasing *)error {
 	if (error) {
 		*error = nil;
 	}
@@ -260,8 +336,23 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 		(__bridge id)kSecAttrAccount: username,
 		(__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue,
 	}.mutableCopy;
-	if (options.prompt.length) {
-		query[(__bridge id)kSecUseOperationPrompt] = options.prompt;
+
+	if (readingOptions.prompt.length) {
+		query[(__bridge id)kSecUseOperationPrompt] = readingOptions.prompt;
+	}
+
+	// In the case where we are password protected but no local auth was passed in.  Return early with error.
+	if([self isKeychainPasswordProtectedForUsername:username service:service] && !readingOptions.localAuthContext) {
+		if (error) {
+			*error = [NSError errorWithDomain:STSecurityKeychainAccessErrorDomain code:errSecAuthFailed userInfo:nil];
+		}
+		return nil;
+	} else if(readingOptions.localAuthContext) {
+		query[(__bridge id)kSecUseAuthenticationContext] = readingOptions.localAuthContext;
+		CFTypeRef accessControlRef = SecAccessControlCreateWithFlags(NULL, kSecAttrAccessibleWhenUnlocked, kSecAccessControlApplicationPassword, NULL);
+		query[(__bridge id)kSecAttrAccessControl] = (__bridge id)accessControlRef;
+
+		CFRelease(accessControlRef);
 	}
 
 	CFDataRef result = NULL;
@@ -304,6 +395,7 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 		(__bridge id)kSecAttrService: service,
 		(__bridge id)kSecAttrAccount: username,
 	}.mutableCopy;
+
 	if (options.prompt.length) {
 		query[(__bridge id)kSecUseOperationPrompt] = options.prompt;
 	}
@@ -343,6 +435,7 @@ NSString * const STSecurityKeychainAccessErrorDomain = @"STSecurityKeychainError
 		(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
 		(__bridge id)kSecAttrService: service,
 	}.mutableCopy;
+
 	if (options.prompt.length) {
 		query[(__bridge id)kSecUseOperationPrompt] = options.prompt;
 	}

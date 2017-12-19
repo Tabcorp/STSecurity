@@ -77,7 +77,7 @@ static NSString * const service = @"STSecurityTest";
 		options.overwriteExisting = YES;
 
 		NSError *error = nil;
-		BOOL const status = [STSecurityKeychainAccess setPassword:password forUsername:username service:service withOptions:options error:&error];
+		BOOL const status = [STSecurityKeychainAccess setPassword:password forUsername:username service:service withReadingOptions:nil withWritingOptions:options error:&error];
 		XCTAssertTrue(status);
 		XCTAssertNil(error, @"error: %@", error);
 	}
@@ -95,7 +95,7 @@ static NSString * const service = @"STSecurityTest";
 		options.overwriteExisting = YES;
 
 		NSError *error = nil;
-		BOOL const status = [STSecurityKeychainAccess setPassword:password forUsername:username service:service withOptions:options error:&error];
+		BOOL const status = [STSecurityKeychainAccess setPassword:password forUsername:username service:service withReadingOptions:nil withWritingOptions:options error:&error];
 		XCTAssertTrue(status);
 		XCTAssertNil(error, @"error: %@", error);
 	}

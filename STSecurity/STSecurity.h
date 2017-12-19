@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Scott Talbot. All rights reserved.
 
 #import <Foundation/Foundation.h>
-
+#import <LocalAuthentication/LocalAuthentication.h>
 
 FOUNDATION_EXPORT double STSecurityVersionNumber;
 FOUNDATION_EXPORT const unsigned char STSecurityVersionString[];

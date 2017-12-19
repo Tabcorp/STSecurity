@@ -10,31 +10,33 @@
 		2C1D8CC116186B6B009EB62A /* STSecurityRSAKey.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2C55A16F1616E6A400C54B8C /* STSecurityRSAKey.h */; };
 		2C1D8CC316186B6F009EB62A /* STSecurityKeychainAccess.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2C55A16C1616E68800C54B8C /* STSecurityKeychainAccess.h */; };
 		2C1D8CC416186B72009EB62A /* STSecurityRSAEncryption.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2C55A1761617C70700C54B8C /* STSecurityRSAEncryption.h */; };
-		2C1D8D04161931CB009EB62A /* STSecurityRSAKeyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C1D8D03161931CB009EB62A /* STSecurityRSAKeyTests.m */; };
 		2C2C12661D8A9C740039643D /* STSecurityKeychainAccess+RSA.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C2C12641D8A9C740039643D /* STSecurityKeychainAccess+RSA.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2C2C12671D8A9C740039643D /* STSecurityKeychainAccess+RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C12651D8A9C740039643D /* STSecurityKeychainAccess+RSA.m */; };
-		2C2C12681D8A9C740039643D /* STSecurityKeychainAccess+RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C12651D8A9C740039643D /* STSecurityKeychainAccess+RSA.m */; };
-		2C55A16E1616E68800C54B8C /* STSecurityKeychainAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A16D1616E68800C54B8C /* STSecurityKeychainAccess.m */; };
-		2C55A1711616E6A400C54B8C /* STSecurityRSAKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A1701616E6A400C54B8C /* STSecurityRSAKey.m */; };
-		2C55A17516171D3000C54B8C /* STSecurityKeychainAccessRSATests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A17416171D3000C54B8C /* STSecurityKeychainAccessRSATests.m */; };
-		2C55A1781617C70700C54B8C /* STSecurityRSAEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A1771617C70700C54B8C /* STSecurityRSAEncryption.m */; };
-		2C55A17E161832D400C54B8C /* STSecurityRSAEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A17D161832D400C54B8C /* STSecurityRSAEncryptionTests.m */; };
-		2C5F7EED161B03D200001538 /* STSecurityKeychainAccessPasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F7EEC161B03D200001538 /* STSecurityKeychainAccessPasswordTests.m */; };
 		2C62F2851E6BCA1600CE0D6B /* STSecurityKeychainAccess+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C2C12691D8A9D380039643D /* STSecurityKeychainAccess+Internal.h */; };
 		2CBC57E61615D8C000FF15E9 /* STSecurityRandomization.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2CBC57E51615D8C000FF15E9 /* STSecurityRandomization.h */; };
-		2CBC57E81615D8C000FF15E9 /* STSecurityRandomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CBC57E71615D8C000FF15E9 /* STSecurityRandomization.m */; };
 		2CBC57F61615D8C000FF15E9 /* libSTSecurity.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CBC57DD1615D8C000FF15E9 /* libSTSecurity.a */; };
 		2CBC57FF1615D8C000FF15E9 /* STSecurityRandomizationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CBC57FE1615D8C000FF15E9 /* STSecurityRandomizationTests.m */; };
 		2CDDD09E1AE0F77A005BCF0E /* STSecurity.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CDDD09D1AE0F3C1005BCF0E /* STSecurity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2CDDD09F1AE0F77A005BCF0E /* STSecurityRandomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CBC57E51615D8C000FF15E9 /* STSecurityRandomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2CDDD0A01AE0F77A005BCF0E /* STSecurityRandomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CBC57E71615D8C000FF15E9 /* STSecurityRandomization.m */; };
 		2CDDD0A11AE0F77A005BCF0E /* STSecurityRSAKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C55A16F1616E6A400C54B8C /* STSecurityRSAKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2CDDD0A21AE0F77A005BCF0E /* STSecurityRSAKey+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C55A17216171A7900C54B8C /* STSecurityRSAKey+Internal.h */; };
-		2CDDD0A31AE0F77A005BCF0E /* STSecurityRSAKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A1701616E6A400C54B8C /* STSecurityRSAKey.m */; };
 		2CDDD0A41AE0F77A005BCF0E /* STSecurityKeychainAccess.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C55A16C1616E68800C54B8C /* STSecurityKeychainAccess.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2CDDD0A51AE0F77A005BCF0E /* STSecurityKeychainAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A16D1616E68800C54B8C /* STSecurityKeychainAccess.m */; };
 		2CDDD0A61AE0F77A005BCF0E /* STSecurityRSAEncryption.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C55A1761617C70700C54B8C /* STSecurityRSAEncryption.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2CDDD0A71AE0F77A005BCF0E /* STSecurityRSAEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A1771617C70700C54B8C /* STSecurityRSAEncryption.m */; };
+		F688E6F51FE8A6B800D678E6 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F688E6F31FE8A69E00D678E6 /* LocalAuthentication.framework */; };
+		F688E6F61FE8A6D200D678E6 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F688E6F31FE8A69E00D678E6 /* LocalAuthentication.framework */; };
+		F688E7191FEB296E00D678E6 /* STSecurityRandomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CBC57E71615D8C000FF15E9 /* STSecurityRandomization.m */; };
+		F688E71A1FEB296E00D678E6 /* STSecurityRSAKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A1701616E6A400C54B8C /* STSecurityRSAKey.m */; };
+		F688E71B1FEB296E00D678E6 /* STSecurityKeychainAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A16D1616E68800C54B8C /* STSecurityKeychainAccess.m */; };
+		F688E71C1FEB296E00D678E6 /* STSecurityKeychainAccess+RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C12651D8A9C740039643D /* STSecurityKeychainAccess+RSA.m */; };
+		F688E71D1FEB296E00D678E6 /* STSecurityRSAEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A1771617C70700C54B8C /* STSecurityRSAEncryption.m */; };
+		F688E71E1FEB297300D678E6 /* STSecurityRandomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CBC57E71615D8C000FF15E9 /* STSecurityRandomization.m */; };
+		F688E71F1FEB297300D678E6 /* STSecurityRSAKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A1701616E6A400C54B8C /* STSecurityRSAKey.m */; };
+		F688E7201FEB297300D678E6 /* STSecurityKeychainAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A16D1616E68800C54B8C /* STSecurityKeychainAccess.m */; };
+		F688E7211FEB297300D678E6 /* STSecurityKeychainAccess+RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C12651D8A9C740039643D /* STSecurityKeychainAccess+RSA.m */; };
+		F688E7221FEB297300D678E6 /* STSecurityRSAEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A1771617C70700C54B8C /* STSecurityRSAEncryption.m */; };
+		F688E7231FEB298200D678E6 /* STSecurityRSAKeyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C1D8D03161931CB009EB62A /* STSecurityRSAKeyTests.m */; };
+		F688E7241FEB298200D678E6 /* STSecurityKeychainAccessRSATests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A17416171D3000C54B8C /* STSecurityKeychainAccessRSATests.m */; };
+		F688E7251FEB298200D678E6 /* STSecurityKeychainAccessPasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F7EEC161B03D200001538 /* STSecurityKeychainAccessPasswordTests.m */; };
+		F688E7261FEB298200D678E6 /* STSecurityRSAEncryptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C55A17D161832D400C54B8C /* STSecurityRSAEncryptionTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +95,7 @@
 		2CDDD0821AE0F394005BCF0E /* STSecurity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = STSecurity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CDDD0851AE0F394005BCF0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CDDD09D1AE0F3C1005BCF0E /* STSecurity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STSecurity.h; sourceTree = "<group>"; };
+		F688E6F31FE8A69E00D678E6 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F688E6F51FE8A6B800D678E6 /* LocalAuthentication.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F688E6F61FE8A6D200D678E6 /* LocalAuthentication.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +147,7 @@
 				2CBC57E21615D8C000FF15E9 /* STSecurity */,
 				2CBC57F71615D8C000FF15E9 /* STSecurityTests */,
 				2CBC57DE1615D8C000FF15E9 /* Products */,
+				F688E6F21FE8A69E00D678E6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -190,6 +196,14 @@
 			path = STSecurityTests;
 			sourceTree = "<group>";
 			usesTabs = 1;
+		};
+		F688E6F21FE8A69E00D678E6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F688E6F31FE8A69E00D678E6 /* LocalAuthentication.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -285,6 +299,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 2CBC57D21615D8C000FF15E9;
 			productRefGroup = 2CBC57DE1615D8C000FF15E9 /* Products */;
@@ -320,11 +335,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CBC57E81615D8C000FF15E9 /* STSecurityRandomization.m in Sources */,
-				2C2C12671D8A9C740039643D /* STSecurityKeychainAccess+RSA.m in Sources */,
-				2C55A16E1616E68800C54B8C /* STSecurityKeychainAccess.m in Sources */,
-				2C55A1711616E6A400C54B8C /* STSecurityRSAKey.m in Sources */,
-				2C55A1781617C70700C54B8C /* STSecurityRSAEncryption.m in Sources */,
+				F688E7191FEB296E00D678E6 /* STSecurityRandomization.m in Sources */,
+				F688E71D1FEB296E00D678E6 /* STSecurityRSAEncryption.m in Sources */,
+				F688E71B1FEB296E00D678E6 /* STSecurityKeychainAccess.m in Sources */,
+				F688E71A1FEB296E00D678E6 /* STSecurityRSAKey.m in Sources */,
+				F688E71C1FEB296E00D678E6 /* STSecurityKeychainAccess+RSA.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,10 +348,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CBC57FF1615D8C000FF15E9 /* STSecurityRandomizationTests.m in Sources */,
-				2C55A17516171D3000C54B8C /* STSecurityKeychainAccessRSATests.m in Sources */,
-				2C55A17E161832D400C54B8C /* STSecurityRSAEncryptionTests.m in Sources */,
-				2C1D8D04161931CB009EB62A /* STSecurityRSAKeyTests.m in Sources */,
-				2C5F7EED161B03D200001538 /* STSecurityKeychainAccessPasswordTests.m in Sources */,
+				F688E7251FEB298200D678E6 /* STSecurityKeychainAccessPasswordTests.m in Sources */,
+				F688E7231FEB298200D678E6 /* STSecurityRSAKeyTests.m in Sources */,
+				F688E7241FEB298200D678E6 /* STSecurityKeychainAccessRSATests.m in Sources */,
+				F688E7261FEB298200D678E6 /* STSecurityRSAEncryptionTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,11 +359,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CDDD0A71AE0F77A005BCF0E /* STSecurityRSAEncryption.m in Sources */,
-				2C2C12681D8A9C740039643D /* STSecurityKeychainAccess+RSA.m in Sources */,
-				2CDDD0A01AE0F77A005BCF0E /* STSecurityRandomization.m in Sources */,
-				2CDDD0A51AE0F77A005BCF0E /* STSecurityKeychainAccess.m in Sources */,
-				2CDDD0A31AE0F77A005BCF0E /* STSecurityRSAKey.m in Sources */,
+				F688E71E1FEB297300D678E6 /* STSecurityRandomization.m in Sources */,
+				F688E7221FEB297300D678E6 /* STSecurityRSAEncryption.m in Sources */,
+				F688E7201FEB297300D678E6 /* STSecurityKeychainAccess.m in Sources */,
+				F688E71F1FEB297300D678E6 /* STSecurityRSAKey.m in Sources */,
+				F688E7211FEB297300D678E6 /* STSecurityKeychainAccess+RSA.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,7 +440,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = STSecurity/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.chikachow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = STSecurity;
@@ -449,7 +464,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = STSecurity/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.chikachow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = STSecurity;
