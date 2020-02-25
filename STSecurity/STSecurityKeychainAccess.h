@@ -69,16 +69,19 @@ typedef NS_OPTIONS(NSUInteger, STSecurityKeychainItemAccessControl) {
 + (NSString *)passwordForUsername:(NSString *)username service:(NSString *)service;
 + (NSString *)passwordForUsername:(NSString *)username service:(NSString *)service error:(NSError * __autoreleasing *)error;
 + (NSString *)passwordForUsername:(NSString *)username service:(NSString *)service withReadingOptions:(id<STSecurityKeychainReadingOptions>)readingOptions error:(NSError * __autoreleasing *)error;
++ (NSData *)secretForKey:(NSString *)key service:(NSString *)service withReadingOptions:(id<STSecurityKeychainReadingOptions>)readingOptions error:(NSError *__autoreleasing *)error;
 
 + (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service;
 + (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service error:(NSError * __autoreleasing *)error;
 + (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service overwriteExisting:(BOOL)overwriteExisting;
 + (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service overwriteExisting:(BOOL)overwriteExisting error:(NSError * __autoreleasing *)error;
 + (BOOL)setPassword:(NSString *)password forUsername:(NSString *)username service:(NSString *)service withReadingOptions:(id<STSecurityKeychainReadingOptions>)readingOptions withWritingOptions:(id<STSecurityKeychainWritingOptions>)writingOptions error:(NSError *__autoreleasing *)error;
++ (BOOL)setSecret:(NSData *)data forKey:(NSString *)key service:(NSString *)service withReadingOptions:(id<STSecurityKeychainReadingOptions>)readingOptions withWritingOptions:(id<STSecurityKeychainWritingOptions>)writingOptions error:(NSError *__autoreleasing *)error;
 
 + (BOOL)deletePasswordForUsername:(NSString *)username service:(NSString *)service;
 + (BOOL)deletePasswordForUsername:(NSString *)username service:(NSString *)service error:(NSError * __autoreleasing *)error;
 + (BOOL)deletePasswordForUsername:(NSString *)username service:(NSString *)service withOptions:(id<STSecurityKeychainWritingOptions>)options error:(NSError * __autoreleasing *)error;
++ (BOOL)deleteSecretForKey:(NSString *)key service:(NSString *)service withOptions:(id<STSecurityKeychainWritingOptions>)options error:(NSError * __autoreleasing *)error;
 
 + (BOOL)deletePasswordsForService:(NSString *)service;
 + (BOOL)deletePasswordsForService:(NSString *)service error:(NSError * __autoreleasing *)error;
